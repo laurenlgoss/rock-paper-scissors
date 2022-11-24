@@ -1,6 +1,22 @@
 import inquirer from 'inquirer';
 
-const choices = ['Rock', 'Paper', 'Scissors'];
+const rock = 'Rock';
+const paper = 'Paper';
+const scissors = 'Scissors';
+const choices = [
+  {
+    choice: rock,
+    winsTo: scissors,
+  },
+  {
+    choice: paper,
+    winsTo: rock,
+  },
+  {
+    choice: scissors,
+    winsTo: paper,
+  },
+];
 
 function init() {
   gameStart();
@@ -12,13 +28,13 @@ function gameStart() {
       {
         type: 'list',
         message: 'Rock, paper, or scissors?',
-        choices: choices,
+        choices: choices.map((elem) => elem.choice),
         name: 'choice',
       },
     ])
     .then((response) => {
       const computerChoice = getComputerChoice(choices);
-      console.log(`Computer chose ${computerChoice}`);
+      console.log(`Computer chose ${computerChoice.choice}`);
 
       calcWinOrLose(response.choice, computerChoice);
     })
@@ -32,33 +48,15 @@ function getComputerChoice(array) {
 }
 
 function calcWinOrLose(userChoice, computerChoice) {
-  if (userChoice === computerChoice) {
+  if (userChoice === computerChoice.choice) {
     console.log('Tie!');
     return;
   }
 
-  switch (userChoice) {
-    case 'Rock':
-      if (computerChoice === 'Paper') {
-        userLoses();
-      } else if (computerChoice === 'Scissors') {
-        userWins();
-      }
-      break;
-    case 'Paper':
-      if (computerChoice === 'Rock') {
-        userWins();
-      } else if (computerChoice === 'Scissors') {
-        userLoses();
-      }
-      break;
-    case 'Scissors':
-      if (computerChoice === 'Rock') {
-        userLoses();
-      } else if (computerChoice === 'Paper') {
-        userWins();
-      }
-      break;
+  if (computerChoice.winsTo === userChoice) {
+    userLoses();
+  } else {
+    userWins();
   }
 }
 
