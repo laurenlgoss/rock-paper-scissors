@@ -27,7 +27,7 @@ function gameStart() {
     .prompt([
       {
         type: 'list',
-        message: 'Rock, paper, or scissors?',
+        message: `${rock}, ${paper}, or ${scissors}?`,
         choices: choices.map((elem) => elem.choice),
         name: 'choice',
       },
@@ -47,25 +47,14 @@ function getComputerChoice(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-function calcWinOrLose(userChoice, computerChoice) {
-  if (userChoice === computerChoice.choice) {
-    console.log('Tie!');
-    return;
-  }
-
-  if (computerChoice.winsTo === userChoice) {
-    userLoses();
+function calcWinOrLose(userChoice, { choice, winsTo }) {
+  if (choice === userChoice) {
+    console.log('You tied!');
+  } else if (winsTo === userChoice) {
+    console.log('You lost!');
   } else {
-    userWins();
+    console.log('You won!');
   }
-}
-
-function userWins() {
-  console.log('You won!');
-}
-
-function userLoses() {
-  console.log('You lost!');
 }
 
 init();
